@@ -1,0 +1,133 @@
+#navbar_logo{
+    position: absolute;
+    left: 5px;
+    top: 0;
+}
+
+#page-content{
+    background-color: rgba(248,249,250,1);
+    height: 100%;
+}
+
+#main-content{
+    padding-top: 56px;
+}
+
+html, body {
+    min-height: 100vh;
+}
+
+.b-example-divider {
+    width: 100%;
+    height: 3rem;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+}
+
+.c-timeline__item {
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+}
+.c-timeline__item:last-child .c-timeline__content:before {
+    display: none;
+}
+.c-timeline__content {
+    flex: 1;
+    position: relative;
+    order: 1;
+    padding-left: 1.5rem;
+    padding-bottom: 1rem;
+}
+.c-timeline__content:before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background-color: lightgrey;
+}
+.c-timeline__content:after {
+    content: "";
+    position: absolute;
+    left: calc(0px - 11px);
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    z-index: 1;
+    border: 2px solid lightgrey;
+    border-radius: 50%;
+}
+.c-timeline__title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+.c-timeline__desc {
+    color: grey;
+}
+time {
+    text-align: end;
+    flex: 0 0 100px;
+    min-width: 0;
+    overflow-wrap: break-word;
+    padding-bottom: 1rem;
+}
+/*** Non-demo CSS ***/
+.wrapper {
+    max-width: 1000px;
+    margin: 2rem auto 0;
+}
+
+.c-timeline__content.active:after {
+    background-color: #fa204c;
+}
+
+.c-timeline__content.passed:after {
+    background-color: #b6b6b6;
+}
+
+.not_developed{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 100;
+    color: red;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.splide_carousel{
+    position: relative;
+}
+
+.splide__slide{
+    max-height: 80vh;
+    background-size: contain!important;
+}
+
+.profile_item:hover{
+    background-color: rgba(0,0,0,0.1);
+    box-shadow: 10px 10px 8px #888888;
+    cursor: grab;
+}
+
+h4{
+    font-size: 1rem;
+}
+
+.image-anchor{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.gallery-image{
+    max-height: 100%;
+    max-width: 100%;
+}
+
