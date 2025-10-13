@@ -9,6 +9,245 @@
     <link rel="stylesheet" href="bootstrap/bootstrap-icons/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="./css/splide.min.css">
     <link rel="stylesheet" href="./css/style.css">
+
+    <style>
+        .gallery-section {
+            padding: 40px 20px;
+        }
+
+        .albums-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .album-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .album-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .album-cover-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .album-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .album-card:hover .album-cover {
+            transform: scale(1.1);
+        }
+
+        .album-info {
+            padding: 25px;
+        }
+
+        .album-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .album-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .photo-count {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 1050;
+            overflow-y: auto;
+        }
+
+        .gallery-modal.active {
+            display: block;
+        }
+
+        .gallery-modal-content {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .gallery-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            color: white;
+        }
+
+        .gallery-modal-title {
+            font-size: 2rem;
+        }
+
+        .gallery-close-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .gallery-close-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            aspect-ratio: 1;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .photo-item:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .photo-caption {
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-btn.prev {
+            left: 20px;
+        }
+
+        .nav-btn.next {
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .albums-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .photos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+
 </head>
 <body>
     <div id="page-content">
@@ -66,19 +305,19 @@
                 <div class="row justify-content-center pb-4"><h3 class="text-center">Členovia tímu</h3></div>
                 <div class="row justify-content-around">
                     <div class="col-lg-2 col-md-4 col-sm-6 text-center d-flex flex-column align-items-center profile_item pt-3" data-bs-toggle="modal" data-bs-target="#modal1">
-                        <img class="bd-placeholder-img rounded-circle" src="img/profile/blankPic.webp" alt="Profile Image" width="140" height="140">
+                        <img class="bd-placeholder-img rounded-circle" src="img/profile/IMG_2130.jpg" alt="Profile Image" width="140" height="140">
                         <h4 class="fw-normal">Samuel Frťala</h4>
 <!--                        <p class="text-center">CIO</p>-->
                     </div><!-- /.col-lg-4 -->
 
                     <div class="col-lg-2 col-md-4 col-sm-6 text-center d-flex flex-column align-items-center profile_item pt-3" data-bs-toggle="modal" data-bs-target="#modal2">
-                        <img class="bd-placeholder-img rounded-circle" src="img/profile/blankPic.webp" alt="Profile Image" width="140" height="140">
+                        <img class="bd-placeholder-img rounded-circle" src="img/profile/image.jpg" alt="Profile Image" width="140" height="140">
                         <h4 class="fw-normal">Patrik Sith</h4>
 <!--                        <p class="text-center">CTO</p>-->
                     </div><!-- /.col-lg-4 -->
 
                     <div class="col-lg-2 col-md-4 col-sm-6 text-center d-flex flex-column align-items-center profile_item pt-3" data-bs-toggle="modal" data-bs-target="#modal3">
-                        <img class="bd-placeholder-img rounded-circle" src="img/profile/blankPic.webp" alt="Profile Image" width="140" height="140">
+                        <img class="bd-placeholder-img rounded-circle" src="img/profile/20240826_195247.jpg" alt="Profile Image" width="140" height="140">
                         <h4 class="fw-normal">Matej Maďar</h4>
 <!--                        <p class="text-center">CMO</p>-->
                     </div><!-- /.col-lg-4 -->
@@ -137,63 +376,63 @@
 
             <div id="progress" class="b-example-divider"></div>
 
-            <div class="container py-4">
-                <div class="row justify-content-center pb-4"><h3 class="text-center">Postup riešenia</h3></div>
-                <div class="wrapper">
-                    <ol class="c-timeline">
-                        <li class="c-timeline__item">
-                            <div class="c-timeline__content passed">
-                                <h3 class="c-timeline__title">Krok 1</h3>
-                                <p class="c-timeline__desc">Popis kroku 1</p>
-                            </div>
-                        </li>
-                        <li class="c-timeline__item">
-                            <div class="c-timeline__content passed">
-                                <h3 class="c-timeline__title">Krok 2</h3>
-                                <p class="c-timeline__desc">Popis kroku 2</p>
-                            </div>
-                        </li>
-                        <li class="c-timeline__item">
-                            <div class="c-timeline__content active">
-                                <h3 class="c-timeline__title">Ukončenie projektu</h3>
-                                <p class="c-timeline__desc"></p>
-                            </div>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-
-            <div id="photo" class="b-example-divider"></div>
-
-            <div class="splide_carousel container-fluid py-4">
+            <div class="gallery-section container-fluid py-4">
                 <div class="row justify-content-center pb-4"><h3 class="text-center">Fotogaléria</h3></div>
-<!--                <div class="not_developed text-center w-100">Na obsahu sa pracuje</div>-->
-                <section class="splide" id="image-carousel" aria-label="Splide Basic HTML Example">
-                    <div class="splide__track">
-                        <ul class="splide__list">
-                            <li class="splide__slide">
-                                <a href="img/ddddddddd.png" class="image-anchor" data-toggle="lightbox" data-caption="">
-                                    <img src="img/ddddddddd.png" alt="" class="gallery-image">
-                                </a>
-                            </li>
-                            <li class="splide__slide">
-                                <a href="img/vvvvvvv.png" class="image-anchor" data-toggle="lightbox" data-caption="">
-                                    <img src="img/vvvvvvv.png" alt="" class="gallery-image">
-                                </a>
-                            </li>
-                            <li class="splide__slide">
-                                <a href="img/Untitled.png" class="image-anchor" data-toggle="lightbox" data-caption="">
-                                    <img src="img/Untitled.png" alt="" class="gallery-image">
-                                </a>
-                            </li>
-                            <li class="splide__slide">
-                                <a href="img/bbbbb.png" class="image-anchor" data-toggle="lightbox" data-caption="">
-                                    <img src="img/bbbbb.png" alt="" class="gallery-image">
-                                </a>
-                            </li>
-                        </ul>
+
+                <div class="container">
+                    <div class="albums-grid">
+                        <!-- Album 1 -->
+                        <div class="album-card" onclick="openAlbum('team')">
+                            <div class="album-cover-wrapper">
+                                <img src="img/albumcover/istockphoto-2148674008-612x612.jpg" alt="Tím" class="album-cover">
+                            </div>
+                            <div class="album-info">
+                                <div class="album-title">Náš tím</div>
+                                <div class="album-meta">
+                                    <div class="photo-count">
+                                        <span>📷</span>
+                                        <span>4 fotky</span>
+                                    </div>
+                                    <span>2025</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Album 2 -->
+                        <div class="album-card" onclick="openAlbum('workspace')">
+                            <div class="album-cover-wrapper">
+                                <img src="img/albumcover/earth-931552_1280.webp" alt="Pracovisko" class="album-cover">
+                            </div>
+                            <div class="album-info">
+                                <div class="album-title">Webstránka</div>
+                                <div class="album-meta">
+                                    <div class="photo-count">
+                                        <span>📷</span>
+                                        <span>4 fotky</span>
+                                    </div>
+                                    <span>2025</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Album 3 -->
+                        <div class="album-card" onclick="openAlbum('presentations')">
+                            <div class="album-cover-wrapper">
+                                <img src="img/albumcover/1601889036prezentacia-zaverecnej-prace.jpg" alt="Prezentácie" class="album-cover">
+                            </div>
+                            <div class="album-info">
+                                <div class="album-title">Prezentácie a stretnutia</div>
+                                <div class="album-meta">
+                                    <div class="photo-count">
+                                        <span>📷</span>
+                                        <span>4 fotky</span>
+                                    </div>
+                                    <span>2025</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </section>
+                </div>
             </div>
 
             <div class="b-example-divider"></div>
@@ -209,7 +448,7 @@
                 </div>
 
                 <ul class="nav col-md-4 justify-content-end list-unstyled d-flex" style="padding-right: 40px">
-                    <li class="ms-3"><a class="text-body-secondary" href="https://github.com/NUCAA-FEI"><img src="./img/github-mark.svg" alt="GitHub" width="24" height="24"></a></li>
+                    <li class="ms-3"><a class="text-body-secondary" href="https://github.com/NUCAA-FEI"><img src="img/stranka/github-mark.svg" alt="GitHub" width="24" height="24"></a></li>
                 </ul>
             </footer>
         </div>
@@ -218,7 +457,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel1">Person 1</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel1">Samuel Frťala</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -228,14 +467,15 @@
                                 <h4>Kontakt:</h4>
                             </div>
                         </div>
+<!--                        <div class="row">-->
+<!--                            <div class="col-1"><i class="bi bi-telephone"></i></div><div class="col-11"> <span>+421 xxx xxx xxx</span></div>-->
+<!--                        </div>-->
                         <div class="row">
-                            <div class="col-1"><i class="bi bi-telephone"></i></div><div class="col-11"> <span>+421 xxx xxx xxx</span></div>
+                            <div class="col-1"><i class="bi bi-at"></i></div><div class="col-11"> <span>xfrtalas@stuba.sk</span></div>
                         </div>
                         <div class="row">
-                            <div class="col-1"><i class="bi bi-at"></i></div><div class="col-11"> <span>xname@stuba.sk</span></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-1"><a href="https://github.com/" target="_blank"><i class="bi bi-github"></i></a></div><div class="col-1"> <a href="https://linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a></div>
+                            <div class="col-1"><a href="https://github.com/SamkoPankoo" target="_blank"><i class="bi bi-github"></i></a></div>
+<!--                            <div class="col-1"> <a href="https://linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a></div>-->
                         </div>
                         <hr />
                         <div class="row">
@@ -253,20 +493,20 @@
                             <div class="col-1"></div> <div class="col-11">Aplikovaná informatika</div>
                         </div>
                         <div class="row">
-                            <div class="col-1"></div> <div class="col-11">Odbor</div>
+                            <div class="col-1"></div> <div class="col-11">Inteligentné softvérové systémy</div>
                         </div>
                         <div class="row">
                             <div class="col-1"></div> <div class="col-11">1. ročník 2. stupňa</div>
                         </div>
                         <hr />
-                        <div class="row">
-                            <div class="col-6">Záľuby:</div>
-                            <div class="col-6"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">Iné:</div>
-                            <div class="col-6"></div>
-                        </div>
+<!--                        <div class="row">-->
+<!--                            <div class="col-6">Záľuby:</div>-->
+<!--                            <div class="col-6"></div>-->
+<!--                        </div>-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-6">Iné:</div>-->
+<!--                            <div class="col-6"></div>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -286,9 +526,9 @@
                                 <h4>Kontakt:</h4>
                             </div>
                         </div>
-                        <div class="row">
+                    <!--    <div class="row">
                             <div class="col-1"><i class="bi bi-telephone"></i></div><div class="col-11"> <span>+421 xxx xxx xxx</span></div>
-                        </div>
+                        </div>-->
                         <div class="row">
                             <div class="col-1"><i class="bi bi-at"></i></div><div class="col-11"> <span>xsith@stuba.sk</span></div>
                         </div>
@@ -321,10 +561,10 @@
                             <div class="col-6">Záľuby:</div>
                             <div class="col-6">Plat IV Líg of LedŽends</div>
                         </div>
-                        <div class="row">
-                            <div class="col-6">Iné:</div>
-                            <div class="col-6"></div>
-                        </div>
+<!--                        <div class="row">-->
+<!--                            <div class="col-6">Iné:</div>-->
+<!--                            <div class="col-6"></div>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -334,7 +574,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel3">Person 3</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel3">Matej Maďar</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -344,14 +584,15 @@
                                 <h4>Kontakt:</h4>
                             </div>
                         </div>
+<!--                        <div class="row">-->
+<!--                            <div class="col-1"><i class="bi bi-telephone"></i></div><div class="col-11"> <span>+421 xxx xxx xxx</span></div>-->
+<!--                        </div>-->
                         <div class="row">
-                            <div class="col-1"><i class="bi bi-telephone"></i></div><div class="col-11"> <span>+421 xxx xxx xxx</span></div>
+                            <div class="col-1"><i class="bi bi-at"></i></div><div class="col-11"> <span>xmadarm@stuba.sk</span></div>
                         </div>
                         <div class="row">
-                            <div class="col-1"><i class="bi bi-at"></i></div><div class="col-11"> <span>xname@stuba.sk</span></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-1"><a href="https://github.com/" target="_blank"><i class="bi bi-github"></i></a></div><div class="col-1"> <a href="https://linkedin.com" target="_blank"><i class="bi bi-linkedin"></i></a></div>
+<!--                            <div class="col-1"><a href="https://github.com/" target="_blank"><i class="bi bi-github"></i></a></div>-->
+                            <div class="col-1"> <a href="https://linkedin.com/in/matej-maďar-876b07250" target="_blank"><i class="bi bi-linkedin"></i></a></div>
                         </div>
                         <hr />
                         <div class="row">
@@ -369,7 +610,7 @@
                             <div class="col-1"></div> <div class="col-11">Aplikovaná informatika</div>
                         </div>
                         <div class="row">
-                            <div class="col-1"></div> <div class="col-11">Odbor</div>
+                            <div class="col-1"></div> <div class="col-11">Umelá inteligencia</div>
                         </div>
                         <div class="row">
                             <div class="col-1"></div> <div class="col-11">1. ročník 2. stupňa</div>
@@ -504,40 +745,168 @@
             </div>
         </div>
     </div>
+    <!-- Modal pre fotogalériu -->
+    <div class="gallery-modal" id="albumModal">
+        <div class="gallery-modal-content">
+            <div class="gallery-modal-header">
+                <h2 class="gallery-modal-title" id="modalTitle"></h2>
+                <button class="gallery-close-btn" onclick="closeAlbumModal()">&times;</button>
+            </div>
+            <div class="photos-grid" id="photosGrid"></div>
+        </div>
+    </div>
+
+    <!-- Lightbox pre plné zobrazenie -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <button class="nav-btn prev" onclick="navigatePhoto(-1)">‹</button>
+        <button class="nav-btn next" onclick="navigatePhoto(1)">›</button>
+        <img id="lightboxImg" src="" alt="">
+    </div>
 </body>
 <script src="bootstrap/bootstrap.bundle.min.js"></script>
 <script src="js/splide.min.js"></script>
 <script src="js/index.bundle.min.js"></script>
 <script src="js/jquery-3.6.0.min.js"></script>
 <script>
-    anchors = $('.image-anchor');
-    images = $('.gallery-image');
+    // anchors = $('.image-anchor');
+    // images = $('.gallery-image');
+    //
+    // document.addEventListener( 'DOMContentLoaded', function() {
+    //
+    //     var elms = document.getElementsByClassName( 'splide' );
+    //
+    //
+    //     new Splide( '#image-carousel', {
+    //         perPage    : 3,
+    //         cover      : true,
+    //         lazyLoad: 'nearby',
+    //         heightRatio: 0.5,
+    //         type   : 'loop',
+    //         perMove: 1,
+    //         gap: '1em',
+    //         drag: 'free',
+    //         snap: true,
+    //         autoplay: false,
+    //         pauseOnHover: true,
+    //         pauseOnFocus: true,
+    //         interval: 3000
+    //     }  ).mount();
+    //
+    //     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    //     const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    //
+    // } );
+    // Fotogaléria
+    const albums = {
+        team: {
+            title: 'Náš tím',
+            photos: [
+                { src: 'img/tim/IMG_3129.jpg', caption: 'Tímová fotka' }
 
-    document.addEventListener( 'DOMContentLoaded', function() {
+            ]
+        },
+        workspace: {
+            title: 'Webstránka',
+            photos: [
+                { src: 'img/stranka/vvvvvvv.png', caption: 'Naše kancelárie' },
+                { src: 'img/stranka/ddddddddd.png', caption: 'Pracovné stanice' },
+                { src: 'img/stranka/bbbbb.png', caption: 'Spoločný priestor' },
+                { src: 'img/stranka/Untitled.png', caption: 'Detail pracoviska' }
+            ]
+        },
+        presentations: {
+            title: 'Prezentácie a stretnutia',
+            photos: [
+                { src: 'img/stretnutia/IMG_3128.jpg', caption: 'Prvá prezentácia' }
 
-        var elms = document.getElementsByClassName( 'splide' );
+            ]
+        }
+    };
 
+    let currentAlbum = [];
+    let currentPhotoIndex = 0;
 
-        new Splide( '#image-carousel', {
-            perPage    : 3,
-            cover      : true,
-            lazyLoad: 'nearby',
-            heightRatio: 0.5,
-            type   : 'loop',
-            perMove: 1,
-            gap: '1em',
-            drag: 'free',
-            snap: true,
-            autoplay: false,
-            pauseOnHover: true,
-            pauseOnFocus: true,
-            interval: 3000
-        }  ).mount();
+    function openAlbum(albumId) {
+        const album = albums[albumId];
+        currentAlbum = album.photos;
 
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+        document.getElementById('modalTitle').textContent = album.title;
 
-    } );
+        const photosGrid = document.getElementById('photosGrid');
+        photosGrid.innerHTML = '';
+
+        album.photos.forEach((photo, index) => {
+            const photoItem = document.createElement('div');
+            photoItem.className = 'photo-item';
+            photoItem.onclick = () => openLightbox(index);
+
+            photoItem.innerHTML = `
+                <img src="${photo.src}" alt="${photo.caption}">
+                <div class="photo-overlay">
+                    <div class="photo-caption">${photo.caption}</div>
+                </div>
+            `;
+
+            photosGrid.appendChild(photoItem);
+        });
+
+        document.getElementById('albumModal').classList.add('active');
+    }
+
+    function closeAlbumModal() {
+        document.getElementById('albumModal').classList.remove('active');
+    }
+
+    function openLightbox(index) {
+        currentPhotoIndex = index;
+        const photo = currentAlbum[currentPhotoIndex];
+        document.getElementById('lightboxImg').src = photo.src;
+        document.getElementById('lightbox').classList.add('active');
+    }
+
+    function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+    }
+
+    function navigatePhoto(direction) {
+        currentPhotoIndex += direction;
+
+        if (currentPhotoIndex < 0) {
+            currentPhotoIndex = currentAlbum.length - 1;
+        } else if (currentPhotoIndex >= currentAlbum.length) {
+            currentPhotoIndex = 0;
+        }
+
+        document.getElementById('lightboxImg').src = currentAlbum[currentPhotoIndex].src;
+    }
+
+    // Klávesové skratky
+    document.addEventListener('keydown', (e) => {
+        if (document.getElementById('lightbox').classList.contains('active')) {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigatePhoto(-1);
+            if (e.key === 'ArrowRight') navigatePhoto(1);
+        }
+        if (document.getElementById('albumModal').classList.contains('active')) {
+            if (e.key === 'Escape') closeAlbumModal();
+        }
+    });
+
+    // Zatvorenie modalu kliknutím mimo obsahu
+    document.getElementById('albumModal').addEventListener('click', (e) => {
+        if (e.target.id === 'albumModal') closeAlbumModal();
+    });
+
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+        if (e.target.id === 'lightbox') closeLightbox();
+    });
+
+    // Pôvodný kód pre tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    });
 
 </script>
 </html>
