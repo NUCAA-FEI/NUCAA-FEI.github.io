@@ -131,3 +131,15 @@ h4{
     max-width: 100%;
 }
 
+.profile_item img {
+    width: 140px !important;
+    height: 140px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+}
+
+.bd-placeholder-img {
+    width: 140px !important;
+    height: 140px !important;
+    object-fit: cover !important;
+}
